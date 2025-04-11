@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Vazirmatn', sans-serif;
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-minimal {
+  background: linear-gradient(to bottom right, #2d3748, #1a202c);
+}
+
+.bg-modern {
+  background: linear-gradient(to bottom right, #805ad5, #3182ce);
+}
+
+.container-card {
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+header img {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+form input::placeholder {
+  color: white;
+  opacity: 0.7;
+}
+
+form button {
+  background: none;
+}
+
+#todoList button {
+  margin-right: 0.5rem;
+  color: #f56565;
+}
