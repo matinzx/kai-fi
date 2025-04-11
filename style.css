@@ -1,19 +1,23 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Vazirmatn', sans-serif;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  /* فونت پیش‌فرض از طریق ویژگی inline در newtab.html تنظیم شده است */
 }
 
+/* تم مینیمال */
 .bg-minimal {
   background: linear-gradient(to bottom right, #2d3748, #1a202c);
 }
 
+/* تم مدرن */
 .bg-modern {
   background: linear-gradient(to bottom right, #805ad5, #3182ce);
 }
 
+/* استایل کارت‌های ظاهری */
 .container-card {
   backdrop-filter: blur(16px);
   background: rgba(255, 255, 255, 0.1);
@@ -41,4 +45,9 @@ form button {
 #todoList button {
   margin-right: 0.5rem;
   color: #f56565;
+}
+
+/* استایل منوی تنظیمات (در صورت نیاز به سفارشی‌سازی بیشتر) */
+#settingsMenu {
+  /* می‌توانید اینجا استایل‌های دلخواه خود را اضافه کنید */
 }

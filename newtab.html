@@ -1,71 +1,117 @@
-<!-- newtab.html -->
 <!DOCTYPE html>
 <html lang="fa">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>New Tab - افزونه حرفه‌ای شخصی</title>
+  <!-- بارگذاری Tailwind CSS و FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <!-- فایل CSS اختصاصی -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gradient-to-br from-gray-800 to-gray-900 text-white min-h-screen flex flex-col">
-  <header class="flex justify-between items-center p-4">
-    <img src="default-character.png" alt="User Icon" class="w-12 h-12 rounded-full shadow-md">
-    <form id="googleSearch" class="flex bg-white/20 rounded overflow-hidden">
-      <input type="text" placeholder="جستجوی گوگل..." class="bg-transparent px-3 py-2 text-white focus:outline-none" id="searchInput">
-      <button type="submit" class="px-3 text-white">
-        <i class="fas fa-search"></i>
-      </button>
-    </form>
-  </header>
-
-  <main class="flex-grow flex items-center justify-center">
-    <div class="container-card w-full max-w-4xl">
-      <section class="text-center mb-8">
-        <h1 id="greeting" class="text-2xl font-bold mb-4">سلام!</h1>
-        <div class="flex justify-center space-x-4">
-          <select id="fontSelector" class="bg-white/20 rounded p-2 text-black">
-            <option value="Vazirmatn">Vazirmatn</option>
-            <option value="Sahel">Sahel</option>
-            <option value="Shabnam">Shabnam</option>
-          </select>
-          <select id="themeSelector" class="bg-white/20 rounded p-2 text-black">
-            <option value="minimal">مینیمال</option>
-            <option value="modern">مدرن</option>
-          </select>
-        </div>
-      </section>
-
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md">
-          <h2 class="text-lg font-semibold mb-2">تصویر پس‌زمینه</h2>
-          <input type="file" id="backgroundInput" accept="image/*" class="text-white" />
-        </div>
-
-        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md text-center">
-          <h2 class="text-lg font-semibold mb-2">آب و هوا</h2>
-          <div id="weatherInfo">در حال دریافت...</div>
-        </div>
-
-        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md text-center">
-          <h2 class="text-lg font-semibold mb-2">ساعت و تاریخ</h2>
-          <div id="time" class="text-3xl font-bold">00:00</div>
-          <div id="date" class="text-sm">--</div>
-        </div>
-
-        <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md">
-          <h2 class="text-lg font-semibold mb-2">لیست کارها</h2>
-          <div class="flex mb-2">
-            <input type="text" id="todoInput" placeholder="کار جدید..." class="flex-grow p-2 rounded-l text-black">
-            <button id="addTodoButton" class="bg-green-500 px-4 rounded-r text-white">افزودن</button>
-          </div>
-          <ul id="todoList" class="space-y-1 text-sm"></ul>
-        </div>
-      </section>
+<body class="bg-gray-800 text-white min-h-screen flex flex-col" style="font-family: Vazirmatn;">
+  
+  <!-- هدر: شامل تصویر کاراکتر (برای منوی تنظیمات) و ساعت -->
+  <header class="flex items-center justify-between p-4 shadow-md bg-gray-900/80">
+    <div class="flex items-center space-x-2">
+      <img id="userIcon" src="default-character.png" alt="User Icon" class="w-12 h-12 rounded-full shadow-md">
+      <h2 class="text-lg font-bold hidden sm:block">صفحه شخصی</h2>
     </div>
+    <div id="time" class="text-3xl font-bold">00:00</div>
+  </header>
+  
+  <!-- محتوای اصلی صفحه -->
+  <main class="flex-grow container mx-auto px-4 py-6">
+    
+    <!-- ردیف بالا: آب و هوا، جستجوی گوگل و تنظیمات سریع -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+      <!-- ویجت آب و هوا -->
+      <div class="bg-gray-700/50 rounded-xl p-4 flex flex-col items-center">
+        <h2 class="text-xl font-semibold mb-2">آب و هوا</h2>
+        <div id="weatherInfo" class="text-center">در حال دریافت...</div>
+      </div>
+      
+      <!-- فرم جستجوی گوگل -->
+      <form id="googleSearch" class="bg-gray-700/50 rounded-xl p-4 flex items-center col-span-2">
+        <input type="text" placeholder="جستجوی گوگل..." class="flex-grow bg-transparent placeholder-white/70 outline-none text-white px-2" id="searchInput">
+        <button type="submit" class="bg-green-500 hover:bg-green-600 transition-all text-white px-4 py-2 rounded">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      
+      <!-- تنظیمات سریع صفحه -->
+      <div class="bg-gray-700/50 rounded-xl p-4 flex flex-col justify-center items-center space-y-3">
+        <h2 class="text-lg font-semibold">تنظیمات صفحه</h2>
+        <select id="fontSelector" class="bg-gray-600 text-white rounded p-2 w-full">
+          <option value="Vazirmatn">Vazirmatn</option>
+          <option value="Sahel">Sahel</option>
+          <option value="Shabnam">Shabnam</option>
+        </select>
+        <select id="themeSelector" class="bg-gray-600 text-white rounded p-2 w-full">
+          <option value="minimal">مینیمال</option>
+          <option value="modern">مدرن</option>
+        </select>
+      </div>
+    </section>
+    
+    <!-- ردیف میانی: تاریخ امروز، تصویر مرکزی و لیست کارها -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- تاریخ امروز -->
+      <div class="bg-gray-700/50 rounded-xl p-4 flex flex-col items-center">
+        <h2 class="text-xl font-semibold mb-2">تاریخ امروز</h2>
+        <div id="date" class="text-md">--</div>
+      </div>
+      
+      <!-- تصویر مرکزی (مثلاً Darth Vader) -->
+      <div class="relative bg-gray-700/50 rounded-xl p-4 flex items-center justify-center">
+        <img src="vader.png" alt="Darth Vader Character" class="max-h-48 md:max-h-64">
+      </div>
+      
+      <!-- لیست کارها -->
+      <div class="bg-gray-700/50 rounded-xl p-4">
+        <h2 class="text-xl font-semibold mb-4">لیست کارها</h2>
+        <div class="flex mb-3">
+          <input type="text" id="todoInput" placeholder="کار جدید..." class="flex-grow p-2 rounded-l text-black outline-none">
+          <button id="addTodoButton" class="bg-green-500 px-4 rounded-r text-white">افزودن</button>
+        </div>
+        <ul id="todoList" class="space-y-1 text-sm"></ul>
+      </div>
+    </section>
+    
+    <!-- ردیف پایینی: آپلود تصویر پس‌زمینه و میانبرها -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+      <!-- آپلود تصویر پس‌زمینه -->
+      <div class="bg-gray-700/50 rounded-xl p-4 flex flex-col">
+        <h2 class="text-lg font-semibold mb-2">تصویر پس‌زمینه</h2>
+        <input type="file" id="backgroundInput" accept="image/*" class="text-white mb-2">
+        <p class="text-sm text-gray-300">عکس مورد علاقه خود را انتخاب کنید.</p>
+      </div>
+      <!-- میانبرها -->
+      <div class="bg-gray-700/50 rounded-xl p-4">
+        <h2 class="text-lg font-semibold mb-4">میانبرها</h2>
+        <div class="grid grid-cols-3 gap-3">
+          <a href="https://gmail.com" target="_blank" class="bg-gray-600 hover:bg-gray-500 transition rounded flex flex-col items-center p-3 text-white">
+            <i class="fas fa-envelope text-2xl mb-2"></i>
+            <span class="text-sm">جیمیل</span>
+          </a>
+          <a href="https://web.whatsapp.com" target="_blank" class="bg-gray-600 hover:bg-gray-500 transition rounded flex flex-col items-center p-3 text-white">
+            <i class="fab fa-whatsapp text-2xl mb-2"></i>
+            <span class="text-sm">واتساپ</span>
+          </a>
+          <!-- میانبرهای دیگر به دلخواه -->
+        </div>
+      </div>
+    </section>
+    
+    <!-- بخش تقویم در صفحه اصلی (همچنان باقی می‌ماند) -->
+    <section class="bg-gray-700/50 rounded-xl p-4 flex flex-col items-center mt-6">
+      <h2 class="text-xl font-semibold mb-2">تقویم</h2>
+      <div id="mainCalendar" class="w-full"></div>
+    </section>
   </main>
-
+  
+  <!-- اسکریپت اصلی -->
   <script src="script.js"></script>
 </body>
 </html>
