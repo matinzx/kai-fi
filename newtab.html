@@ -1,0 +1,154 @@
+<!-- newtab.html -->
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Tab - افزونه حرفه‌ای شخصی</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-800 to-gray-900 text-white min-h-screen flex items-center justify-center">
+  <div class="backdrop-blur-md bg-white/10 rounded-2xl shadow-xl p-8 w-full max-w-4xl">
+    <header class="flex flex-col items-center mb-8">
+      <img id="characterImage" src="default-character.png" alt="کاراکتر شما" class="w-24 h-24 rounded-full shadow-lg mb-4">
+      <h1 id="greeting" class="text-2xl font-bold mb-2">سلام!</h1>
+      <div class="flex space-x-4">
+        <select id="fontSelector" class="bg-white/20 rounded p-2 text-black">
+          <option value="Vazirmatn">Vazirmatn</option>
+          <option value="Sahel">Sahel</option>
+          <option value="Shabnam">Shabnam</option>
+        </select>
+        <select id="themeSelector" class="bg-white/20 rounded p-2 text-black">
+          <option value="minimal">مینیمال</option>
+          <option value="modern">مدرن</option>
+        </select>
+      </div>
+    </header>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md">
+        <h2 class="text-lg font-semibold mb-2">انتخاب تصویر پس‌زمینه</h2>
+        <input type="file" id="backgroundInput" accept="image/*" class="text-white" />
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md text-center">
+        <h2 class="text-lg font-semibold mb-2">آب و هوا</h2>
+        <div id="weatherInfo">در حال دریافت...</div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md text-center">
+        <h2 class="text-lg font-semibold mb-2">ساعت و تاریخ</h2>
+        <div id="time" class="text-3xl font-bold">00:00</div>
+        <div id="date" class="text-sm">--</div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-md rounded-xl p-4 shadow-md">
+        <h2 class="text-lg font-semibold mb-2">لیست کارها</h2>
+        <div class="flex mb-2">
+          <input type="text" id="todoInput" placeholder="کار جدید..." class="flex-grow p-2 rounded-l text-black">
+          <button id="addTodoButton" class="bg-green-500 px-4 rounded-r text-white">افزودن</button>
+        </div>
+        <ul id="todoList" class="space-y-1 text-sm"></ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ساعت و تاریخ
+    function updateTime() {
+      const now = new Date();
+      const time = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+      const date = now.toLocaleDateString('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('time').textContent = time;
+      document.getElementById('date').textContent = date;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Todo List
+    function loadTodos() {
+      const todos = JSON.parse(localStorage.getItem('todos') || '[]');
+      const list = document.getElementById('todoList');
+      list.innerHTML = '';
+      todos.forEach((todo, index) => {
+        const li = document.createElement('li');
+        li.textContent = todo;
+        const btn = document.createElement('button');
+        btn.textContent = '❌';
+        btn.className = 'ml-2 text-red-500';
+        btn.onclick = () => removeTodo(index);
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+    }
+
+    function addTodo() {
+      const input = document.getElementById('todoInput');
+      const todos = JSON.parse(localStorage.getItem('todos') || '[]');
+      if (input.value.trim() !== '') {
+        todos.push(input.value.trim());
+        localStorage.setItem('todos', JSON.stringify(todos));
+        input.value = '';
+        loadTodos();
+      }
+    }
+
+    function removeTodo(index) {
+      const todos = JSON.parse(localStorage.getItem('todos') || '[]');
+      todos.splice(index, 1);
+      localStorage.setItem('todos', JSON.stringify(todos));
+      loadTodos();
+    }
+
+    document.getElementById('addTodoButton').addEventListener('click', addTodo);
+    loadTodos();
+
+    // تغییر فونت
+    document.getElementById('fontSelector').addEventListener('change', function () {
+      document.body.style.fontFamily = this.value;
+    });
+
+    // تغییر تم
+    document.getElementById('themeSelector').addEventListener('change', function () {
+      document.body.className = this.value === 'modern' ? 'bg-gradient-to-br from-purple-600 to-blue-500 text-white min-h-screen flex items-center justify-center' : 'bg-gradient-to-br from-gray-800 to-gray-900 text-white min-h-screen flex items-center justify-center';
+    });
+
+    // تغییر تصویر پس‌زمینه
+    document.getElementById('backgroundInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.body.style.backgroundImage = `url(${e.target.result})`;
+          localStorage.setItem('backgroundImage', e.target.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // بارگزاری تصویر پس‌زمینه ذخیره‌شده
+    const savedBackground = localStorage.getItem('backgroundImage');
+    if (savedBackground) {
+      document.body.style.backgroundImage = `url(${savedBackground})`;
+    }
+
+    // آب و هوا (ساده با API OpenWeatherMap - نیاز به کلید API دارد)
+    const apiKey = 'YOUR_API_KEY';
+    const city = 'Tehran';
+
+    function fetchWeather() {
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=fa`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('weatherInfo').textContent = `${data.weather[0].description} - ${data.main.temp}°C`;
+        })
+        .catch(error => {
+          document.getElementById('weatherInfo').textContent = 'مشکل در دریافت اطلاعات';
+        });
+    }
+
+    fetchWeather();
+  </script>
+</body>
+</html>

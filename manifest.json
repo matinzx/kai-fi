@@ -1,0 +1,16 @@
+{
+    "manifest_version": 3,
+    "name": "New Tab Personal Assistant",
+    "description": "افزونه صفحه New Tab شخصی با طراحی مدرن و امکانات متنوع",
+    "version": "1.0",
+    "chrome_url_overrides": {
+      "newtab": "newtab.html"
+    },
+    "permissions": [
+      "storage"
+    ],
+    "action": {
+      "default_title": "New Tab Personal Assistant"
+    }
+  }
+  
