@@ -27,6 +27,35 @@ setInterval(updateTime, 1000);
 updateTime();
 
 // -------------------------
+// پیام خوشامدگویی شخصی
+// -------------------------
+function displayWelcomeMessage() {
+  let name = localStorage.getItem('userName');
+  if (!name) {
+    name = prompt('لطفاً نام خود را وارد کنید:');
+    if (name) {
+      localStorage.setItem('userName', name);
+    } else {
+      name = 'دوست عزیز';
+    }
+  }
+  const hour = new Date().getHours();
+  let greeting;
+  if (hour < 12) {
+    greeting = 'صبح بخیر';
+  } else if (hour < 18) {
+    greeting = 'ظهر بخیر';
+  } else {
+    greeting = 'عصر بخیر';
+  }
+  const welcomeEl = document.getElementById('welcomeMessage');
+  if (welcomeEl) {
+    welcomeEl.textContent = `${greeting}، ${name}!`;
+  }
+}
+displayWelcomeMessage();
+
+// -------------------------
 // مدیریت لیست کارها (Todo List)
 // -------------------------
 function loadTodos() {
@@ -154,6 +183,38 @@ const savedBackground = localStorage.getItem("backgroundImage");
 if (savedBackground) {
   document.body.style.backgroundImage = `url(${savedBackground})`;
 }
+
+// -------------------------
+// یادداشت ها
+// -------------------------
+const notesArea = document.getElementById('notesArea');
+if (notesArea) {
+  notesArea.value = localStorage.getItem('notes') || '';
+  notesArea.addEventListener('input', () => {
+    localStorage.setItem('notes', notesArea.value);
+  });
+}
+
+// -------------------------
+// نقل قول روز
+// -------------------------
+function fetchQuote() {
+  fetch('https://api.quotable.io/random?lang=fa')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('quoteText').textContent = data.content;
+    })
+    .catch(() => {
+      const quotes = [
+        'زندگی زیباست.',
+        'آنکه برای دیگران شمع می‌افروزد، خود می‌سوزد.',
+        'هر که طاووس خواهد، جور هندوستان کشد.'
+      ];
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('quoteText').textContent = quote;
+    });
+}
+fetchQuote();
 
 // -------------------------
 // دریافت اطلاعات آب و هوا برای بخش اصلی صفحه
